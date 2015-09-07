@@ -1,0 +1,32 @@
+eeschema (2013-07-07 BZR 4022)-stable  >> Creation date: 06/08/2015 12:32:28
+#Cmp ( ordine = Riferimento )
+| C1         22uF        
+| C2         100nF       
+| D1         RED         
+| D2         YELLOW      
+| D3         GREEN       
+| IC1        ATMEGA328P-P
+| P1         CONN_4      
+| P2         CONN_6      
+| P3         CONN_3      
+| R1         330         
+| R2         330         
+| R3         330         
+#End Cmp
+
+#Cmp ( ordine = Valore )
+| 100nF        C2        
+| 22uF         C1        
+| RED          D1        
+| YELLOW       D2        
+| GREEN        D3        
+| ATMEGA328P-P IC1       
+| CONN_4       P1        
+| CONN_6       P2        
+| CONN_3       P3        
+| 330          R1        
+| 330          R2        
+| 330          R3        
+#Fine Cmp
+
+#Fine Lista

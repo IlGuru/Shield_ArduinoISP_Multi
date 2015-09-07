@@ -1,0 +1,87 @@
+Cmp-Mod V01 Created by CvPcb (2013-07-07 BZR 4022)-stable date = 06/08/2015 12:43:01
+
+BeginCmp
+TimeStamp = /55C33214;
+Reference = C1;
+ValeurCmp = 22uF;
+IdModule  = C1.5V8H;
+EndCmp
+
+BeginCmp
+TimeStamp = /55C33491;
+Reference = C2;
+ValeurCmp = 100nF;
+IdModule  = C1;
+EndCmp
+
+BeginCmp
+TimeStamp = /55C33184;
+Reference = D1;
+ValeurCmp = RED;
+IdModule  = LED-3MM;
+EndCmp
+
+BeginCmp
+TimeStamp = /55C33116;
+Reference = D2;
+ValeurCmp = YELLOW;
+IdModule  = LED-3MM;
+EndCmp
+
+BeginCmp
+TimeStamp = /55C33195;
+Reference = D3;
+ValeurCmp = GREEN;
+IdModule  = LED-3MM;
+EndCmp
+
+BeginCmp
+TimeStamp = /55C332F2;
+Reference = IC1;
+ValeurCmp = ATMEGA328P-P;
+IdModule  = DIP-28__300_ELL;
+EndCmp
+
+BeginCmp
+TimeStamp = /55C32DB9;
+Reference = P1;
+ValeurCmp = CONN_4;
+IdModule  = PIN_ARRAY_4x1;
+EndCmp
+
+BeginCmp
+TimeStamp = /55C32C60;
+Reference = P2;
+ValeurCmp = CONN_6;
+IdModule  = PIN_ARRAY_5x1;
+EndCmp
+
+BeginCmp
+TimeStamp = /55C32F95;
+Reference = P3;
+ValeurCmp = CONN_3;
+IdModule  = PIN_ARRAY_3X1;
+EndCmp
+
+BeginCmp
+TimeStamp = /55C3317E;
+Reference = R1;
+ValeurCmp = 330;
+IdModule  = R3;
+EndCmp
+
+BeginCmp
+TimeStamp = /55C330F4;
+Reference = R2;
+ValeurCmp = 330;
+IdModule  = R3;
+EndCmp
+
+BeginCmp
+TimeStamp = /55C3318F;
+Reference = R3;
+ValeurCmp = 330;
+IdModule  = R3;
+EndCmp
+
+EndListe
