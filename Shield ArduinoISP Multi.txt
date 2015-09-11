@@ -1,0 +1,125 @@
+==Sommario==
+Una shield per Arduino Uno R3 per programmare gli AVR in modalità ArduinoISP.<br />
+==Descrizione ==
+Scrivo questo articolo dopo aver acquistato un AVR AtMega328-PU senza bootloader, ed avendo faticato un po' per programmarlo con "Arduino Uno R3" ed lo sketch ArduinoISP distribuito con l'IDE.
+
+Se il micro acquistato non ha i vari fuses interni settati come si deve, ad esempio il clock interno abilitato, risulterà impossibile programmarlo con lo sketch ArduinoISP ed i collegamenti descritti nel [https://www.arduino.cc/en/Tutorial/ArduinoISP sito] perché il micro vorrebbe essere governato da un segnale clock esterno.
+
+Cercando informazioni in rete, su [http://www.lydiard.plus.com/index.htm Phil's Arduino Tutorial Site] ho trovato una versione modificata di ArduinoISP liberamente scaricabile chiamata [http://www.lydiard.plus.com/downloads/arduinoisp_multi_rc_1.zip ArduinoISP Multi] che si occupa di generare anche un segnale di clock a 8MHz da applicare al pin 9 del ATmega328 (o al pin  XTAL1 del micro da programmare) e prelevabile dalla presa 9 della scheda Arduino Uno R3.
+
+Lo zip contiene uno sketch chiamato ArduinoISP_Multi_rc_1.ino, che una volta compilato e inserito nella scheda, trasformerà Arduino Uno in un ISP che fornirà questi segnali:
+<center>
+{| class="wikitable"
+|-
+! PIN !! SEGNALE
+|-
+| 13 || SCK
+|-
+| 12 || MISO
+|-
+| 11 || MOSI
+|-
+| 10 || RESET
+|-
+| 9 || CLOCK a 8 MHz
+|-
+| 8 || LED Errore
+|-
+| 7 || LED Programmazione
+|-
+| 6 || LED Hearthbeat
+|}
+</center>
+Con questa funzionalità in più, che il micro abbia il clock interno abilitato, che si aspetti un segnale esterno o che si aspetti di avere un quarzo collegato, non avrà più importanza e si riuscirà comunque a leggerne il contenuto, a scriverci un bootloader e/o a programmarlo.
+E' anche utile ad esempio quando ci si ritrova per le mani un micro che è stato programmato tanto tempo prima e non ci si ha più memoria di che cosa contenga, quale sia la sorgente di clock impostata ecc... In questo modo si possono resuscitare anche i micro brickati.
+
+A questo punto, non mi è rimasto altro da fare che prendere Kicad realizzare uno shield per la scheda Arduino Uno da utilizzare ogni volta che capita tra le mani un micro senza bootloader.
+
+==La scheda==
+
+Lo schema elettrico che ho realizzato è questo:
+<immagine id=14685 name='ArduinoISP_Multi_UnoR3.sch.png'>ArduinoISP_Multi_UnoR3.sch.png</immagine>
+
+Layout dello shield e posizionamento componenti:
+<immagine id=14686 name='ArduinoISP_Multi_UnoR3-F_SilkS.png'>ArduinoISP_Multi_UnoR3-F_SilkS.png</immagine>
+Gli 8 pin del lato superiore andranno inseriri nelle prese dal 13 al 6 della scheda Arduino Uno R3
+I 4 pin del lato inferiore invece andranno inseriti nelle prese Reset, 3.3V, 5V e GND.
+
+Ho aggiunto una presa ICSP affiancata da altri 2 pin per il segnale di clock a 8MHz e la massa, così si possono esportare tutti i segnali su una eventuale millefori o ulteriore shield da montare su questa.
+In questo modo si possono realizzare delle estensioni, ad esempio per programmare altri AVR con package diversi dal DIL-28 oppure 
+per implementare un programmatore HIGH VOLTAGE applicando 12 volt al pin di reset con cui recuperare un micro a cui è stato disabilitato tramite il relativo fuse il pin di reset rendendolo non più programmabile con i normali programmatori.
+
+
+La piedinatura è la seguente:
+<immagine id=14691 name='ISP.png'>ISP.png</immagine>
+
+Lato componenti e ponticelli:
+<immagine id=14687 name='ArduinoISP_Multi_UnoR3-F_Cu.png'>ArduinoISP_Multi_UnoR3-F_Cu.png</immagine>
+
+Lato rame:
+<immagine id=14692 name='ArduinoISP_Multi_UnoR3-B_Cu.png'>ArduinoISP_Multi_UnoR3-B_Cu.png</immagine>
+Dopo Dremel, Press 'n Peel, Ferro da stiro, Cloruro ferrico, Acetone, ecc.. il risultato è questo:
+
+<immagine id=14689 name='IMG_20150827_190411.jpg'>IMG_20150827_190411.jpg</immagine>
+Vabeh, il PCB disegnato è sempre più bello del risultato finale realizzato con metodi casalinghi.
+
+<immagine id=14690 name='IMG_20150827_190116.jpg'>IMG_20150827_190116.jpg</immagine>
+E' vero, come C1 ho messo un elettrolitico da 10µF invece che da 22µF, ma va bene lo stesso.
+
+==Prova di funzionamento con avrdude==
+
+Apro cmd e mi posiziono nella cartella principale dei tools avr di Arduino:
+<code>cd C:\Program Files (x86)\Arduino\hardware\tools\avr</code>
+
+Proviamo a collegare solo Arduino Uno:
+<code>avrdude -C .\etc\avrdude.conf  -v -v -p atmega328p -c arduino -PCOM8 -b115200</code>
+
+<immagine id=14694 name='avrdude-000.png'>avrdude-000.png</immagine>
+
+Ora con lo shield ed il montato il micro che ho comprato, un ATMEGA328-PU. 
+
+<immagine id=14693 name='IMG_20150828_095752.jpg'>IMG_20150828_095752.jpg</immagine>
+
+Questo è diverso da quello montato di default su Arduino Uno, che è l' 
+ATMEGA328P-PU. E' identico in tutto e per tutto, tranne per il fatto che non è la versione pico power, ed ha un numero identificativo interno diverso:
+{| class="wikitable"
+|-
+! AVR !! SIGNATURE ID
+|-
+| ATMEGA328P-PU || 1E 95 0F
+|-
+| ATMEGA328-PU || 1E 95 14
+|}
+
+<code>avrdude -C .\etc\avrdude.conf  -v -v -p atmega328 -c arduino -PCOM8 -b19200</code>
+
+<immagine id=14695 name='avrdude-001.png'>avrdude-001.png</immagine>
+
+Se nel parametro -p specifico la versione "P" dell'atmega328, ottengo il messaggio d'errore:
+
+<code>avrdude -C .\etc\avrdude.conf  -v -v -p atmega328p -c arduino -PCOM8 -b19200</code>
+
+<immagine id=14696 name='avrdude-002.png'>avrdude-002.png</immagine>
+
+AVRDUDE ha letto il Device signature 0x1e9514 mentre si aspettava 0x1e950F quindi sta leggendo effettivamente il micro montato sullo shield.
+
+
+==Funzionamento con l'IDE Arduino==
+Vale tutto ciò che è descritto nella guida ufficiale di Arduino, cambia solo il fatto che non ci sono collegamenti da fare perché il micro viene montato sullo shield, e lo sketch da caricare su Arduino UNO che è la versione scaricata e non quella distribuita con l'IDE:
+
+[https://www.arduino.cc/en/Guide/ArduinoISP Arduino ISP]
+
+In sintesi dall' IDE di Arduino:
+* Strumenti->Scheda->Arduino Uno
+* Strumenti->Programmatore->Arduino as ISP
+* File->Carica tramiteun programmatore o in alternativa CTRL+MAIUSC+U
+
+==Note==
+* Con lo shield montato non è possibile programmare la scheda Arduino UNO nemmeno se è selezionato Strumenti->Programmatore->ArduinoISP
+* La versione di IDE con cui ho fatto le prove è la 1.6
+* La versione di avrdude con cui ho fatto le prove è la 6.0.1 distribuita con l'IDE
+* Ho inserito il progetto Kicad sul mio repository [http://github.com/IlGuru/Shield_ArduinoISP_Multi GitHub]
+
+<HR>
+
+<small>''Versione del documento: 1.6''</small>
