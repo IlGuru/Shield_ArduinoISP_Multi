@@ -38,7 +38,7 @@ A questo punto, non mi è rimasto altro da fare che prendere Kicad realizzare uno
 ==La scheda==
 
 Lo schema elettrico che ho realizzato è questo:
-<immagine id=14685 name='ArduinoISP_Multi_UnoR3.sch.png'>ArduinoISP_Multi_UnoR3.sch.png</immagine>
+<immagine id=14807 name='ArduinoISP_Multi_UnoR3.sch.png'>ArduinoISP_Multi_UnoR3.sch.png</immagine>
 
 Layout dello shield e posizionamento componenti:
 <immagine id=14686 name='ArduinoISP_Multi_UnoR3-F_SilkS.png'>ArduinoISP_Multi_UnoR3-F_SilkS.png</immagine>
